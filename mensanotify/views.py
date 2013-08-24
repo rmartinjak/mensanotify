@@ -95,6 +95,7 @@ def search(mensae=MENSA_NAMES, query=None):
 
     return render_template('results.html',
                            form=form,
+                           form_action=url_for('search_post'),
                            mensae=mensae,
                            results=results)
 
@@ -167,6 +168,7 @@ def edit():
         return render_template('edit.html',
                                user=session['user'],
                                form=form,
+                               form_action=url_for('edit'),
                                results=results)
     else:
         form = QueryForm(request.form)

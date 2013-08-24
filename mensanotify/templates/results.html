@@ -18,7 +18,7 @@
 
 	<a name="top" />
 	<div class="form">
-	<form method="POST" action="{{ url_for('search_post') }}">
+	<form method="POST" action="{{ form_action }}">
 		{% for q in form.queries %}
 			<div>{{ q.label(class="query") }}: {{ q(class="query") }}</div>
 			{% endfor %}
