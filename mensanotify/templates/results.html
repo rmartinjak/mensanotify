@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}
+	{% if query %}
+		{{ query }} - search
+	{% else %}
+		overview
+	{% endif %}
+{% endblock %}
+
+
+{% block content %}
+	<a name="top" />
+
+	<div class="form">
+		<form action="{{ url_for('search_post', mensae=mensae) }}" method="POST">
+			<input type="text" name="query" />
+			<input type="submit" value="search" />
+		</form>
+	</div>
+
+{% block results %}
+
+	{% for mensa, weeks in results|dictsort %}
+		<h1>
+			<a href="#top">&uparrow;</a>
+			{% for m, _ in results|dictsort %}
+				{% if m == mensa %}
+					<a name="{{ mensa }}">{{ mensa }}</a>
+				{% else %}
+					<a href="#{{ m }}">{{ m }}</a>
+				{% endif %}
+			{% endfor %}
+		</h1>
+
+		<table class="menu">
+		{% for day, menu in weeks|dictsort %}
+				{% set outer_loop = loop %}
+				{% for item in menu %}
+				{% if loop.first %}
+					<tr class="first">
+						<td class="first" colspan="2">{{ day }}</td>
+					</tr>
+				{% endif %}
+				<tr class="{{ loop.cycle('odd', 'even') }}">
+					<td class="cat">{{ item['cat'] }}</td>
+					<td class="item">
+						<span class="item_name">{{ item['name'] }}</span>
+						<span class="item_desc">{{ item['desc'] }}</span>
+					</td>
+				</tr>
+				{% endfor %}
+		{% endfor %}
+		</table>
+	{% endfor %}
+{% endblock %}
+{% endblock %}

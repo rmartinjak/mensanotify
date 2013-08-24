@@ -1,0 +1,79 @@
+body {
+	font-size: 0.7em;
+	margin: 1em;
+}
+
+h1 {
+	font-size: 1.4em;
+}
+
+div.form {
+	margin: 0em;
+
+}
+
+table.menu {
+	border-collapse: collapse;
+	margin-top: -2em;
+	margin-bottom: 2em;
+	border: solid 0px;
+}
+
+table.menu tr.first {
+	background-color: #afafaf;
+	border-top: solid 2em white;
+}
+
+table.menu tr.odd {
+	background-color: #fff;
+}
+
+table.menu tr.even {
+	background-color: #ccc;
+}
+
+td {
+	padding: 0.3em;
+}
+
+td.cat {
+	max-width: 13em;
+}
+
+td.item span.item_name {
+	font-weight: bold;
+}
+
+ul.flashes {
+	list-style-type: none;
+	margin: 0em;
+	margin-bottom: 1em;
+	padding: 0em;
+}
+
+ul.flashes li {
+	margin-left: 0em;
+	padding: 1em;
+}
+
+ul.flashes li.message {
+	background: #afa;
+}
+
+ul.flashes li.warn {
+	background: #ffa;
+}
+
+ul.flashes li.error {
+	background: #faa;
+}
+
+ul.nav {
+	padding: 0em;
+}
+
+ul.nav li {
+	list-style: none;
+	display: inline;
+	margin: 1em;
+}
