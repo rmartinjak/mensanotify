@@ -1,21 +1,6 @@
 {% extends "results.html" %}
-{% block title %}edit notifications{%endblock %}
+{% block title %}edit notifications{% endblock %}
 
-{% block content %}
-<h1>Notifications for {{ user }}</h1>
-<form method="POST" action="{{ url_for('edit') }}">
-	{% for q in form.queries %}
-		<div>{{ q.label(class="query") }}: {{ q(class="query") }}</div>
-		{% endfor %}
-	<div>{{ form.new_query.label(class="query") }}: {{ form.new_query(class="query") }}</div>
-
-	{% for m in form.mensae %}
-	<div>{{ m(class="select_mensa") }} {{ m.label(class="select_mensa") }}</div>
-	{% endfor %}
-	{{ form.submit() }}
-</form>
-
-{% block results %}
-{{ super() }}
-{% endblock %}
+{% block header %}
+Notifications for {{ user }}
 {% endblock %}

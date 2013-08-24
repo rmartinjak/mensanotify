@@ -7,7 +7,7 @@ import string
 from flask import (request, session, render_template, redirect, url_for,
                    flash, jsonify, abort)
 
-from werkzeug.routing import BaseConverter
+from werkzeug.routing import BaseConverter, PathConverter
 
 from wtforms import Form, validators, widgets
 from wtforms.fields import (TextField, SubmitField, SelectMultipleField,
@@ -34,9 +34,11 @@ class MensaListConverter(BaseConverter):
         return ''.join(n2c[x] for x in value)
 
 
-class QueryListConverter(BaseConverter):
+class QueryListConverter(PathConverter):
     def to_python(self, value):
-        return value.split('/')
+        if not value:
+            return None
+        return [x for x in value.split('/') if x]
 
     def to_url(self, value):
         return '/'.join(value)
@@ -58,9 +60,18 @@ class RegisterForm(Form):
 
 class QueryForm(Form):
     queries = FieldList(TextField('Query'))
-    new_query = TextField('Add query')
     mensae = MultiCheckboxField('mens', choices=zip(MENSA_NAMES, MENSA_NAMES))
     submit = SubmitField(label='Update')
+
+
+def query_form(queries, mensae):
+    form = QueryForm()
+    if queries is not None:
+        for q in queries:
+            form.queries.append_entry(q)
+    form.queries.append_entry('')
+    form.mensae.data = mensae
+    return form
 
 
 def gen_key(N=16):
@@ -70,14 +81,10 @@ def gen_key(N=16):
 
 @app.route('/')
 @app.route('/s/<mensalist:mensae>')
-@app.route('/s/<mensalist:mensae>/')
-def overview(mensae=MENSA_NAMES):
-    return search(mensae)
-
-
 @app.route('/s/<mensalist:mensae>/<query:query>')
-def search(mensae, query=None):
+def search(mensae=MENSA_NAMES, query=None):
     results = mensa.search_many(query, mensae)
+    form = query_form(query, mensae)
 
     if not results:
         msg = 'No results'
@@ -87,15 +94,16 @@ def search(mensae, query=None):
         results = mensa.overview(mensae)
 
     return render_template('results.html',
+                           form=form,
                            mensae=mensae,
-                           query=query,
                            results=results)
 
 
-@app.route('/s/<mensalist:mensae>', methods=['POST'])
-def search_post(mensae, query=''):
-    query = request.form['query']
-    return redirect(url_for('search', mensae=mensae, query=[query]))
+@app.route('/s', methods=['POST'])
+def search_post():
+    form = QueryForm(request.form)
+    q = [x.data for x in form.queries if x.data]
+    return redirect(url_for('search', mensae=form.mensae.data, query=q))
 
 
 @app.route('/json')
@@ -154,10 +162,7 @@ def logout():
 def edit():
     user = users[session['user']]
     if request.method == 'GET':
-        form = QueryForm()
-        for q in user.queries:
-            form.queries.append_entry(q)
-        form.mensae.data = user.mensae
+        form = query_form(user.queries, user.mensae)
         results = mensa.search_many(user.queries, user.mensae)
         return render_template('edit.html',
                                user=session['user'],
@@ -165,7 +170,7 @@ def edit():
                                results=results)
     else:
         form = QueryForm(request.form)
-        q = form.queries.entries + [form.new_query]
+        q = form.queries.entries
         user.queries = [x.data for x in q if x.data]
         user.mensae = form.mensae.data
         return redirect(url_for('edit'))

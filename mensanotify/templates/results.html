@@ -9,17 +9,29 @@
 
 
 {% block content %}
-	<a name="top" />
 
+<h1>
+	{% block header %}
+		Search
+	{% endblock %}
+</h1>
+
+	<a name="top" />
 	<div class="form">
-		<form action="{{ url_for('search_post', mensae=mensae) }}" method="POST">
-			<input type="text" name="query" />
-			<input type="submit" value="search" />
-		</form>
+	<form method="POST" action="{{ url_for('search_post') }}">
+		{% for q in form.queries %}
+			<div>{{ q.label(class="query") }}: {{ q(class="query") }}</div>
+			{% endfor %}
+
+		{% for m in form.mensae %}
+		<div>{{ m(class="select_mensa") }} {{ m.label(class="select_mensa") }}</div>
+		{% endfor %}
+		{{ form.submit() }}
+	</form>
+
 	</div>
 
 {% block results %}
-
 	{% for mensa, weeks in results|dictsort %}
 		<h1>
 			<a href="#top">&uparrow;</a>
