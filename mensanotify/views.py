@@ -103,7 +103,7 @@ def search(mensae=MENSA_NAMES, query=None):
 @app.route('/s', methods=['POST'])
 def search_post():
     form = QueryForm(request.form)
-    q = [x.data for x in form.queries if x.data]
+    q = [x.data for x in form.queries if x.data] or None
     return redirect(url_for('search', mensae=form.mensae.data, query=q))
 
 
