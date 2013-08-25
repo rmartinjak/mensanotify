@@ -93,7 +93,8 @@ def search(mensae=MENSA_NAMES, query=None):
     if not results:
         msg = 'No results'
         if query:
-            msg += 'for "{}"'.format(query)
+            msg += ' for '
+            msg += ', '.join('"{}"'.format(q) for q in query)
         flash(msg, 'warn')
         results = mensa.overview(mensae)
 
