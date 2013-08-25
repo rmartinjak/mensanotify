@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from functools import wraps
 import random
 import string
+import urllib
 
 from flask import (request, session, render_template, redirect, url_for,
                    flash, jsonify, abort)
@@ -41,7 +42,10 @@ class QueryListConverter(PathConverter):
         return [x for x in value.split('/') if x]
 
     def to_url(self, value):
-        return '/'.join(value)
+        for x in value:
+            print x, type(x)
+        v = (urllib.quote(x.encode('utf-8')) for x in value)
+        return '/'.join(v)
 
 
 app.url_map.converters['mensalist'] = MensaListConverter
