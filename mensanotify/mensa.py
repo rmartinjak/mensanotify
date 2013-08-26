@@ -107,7 +107,6 @@ class Data(object):
             self.update()
 
     def _load(self):
-        print("loading")
         with open(self.path) as f:
             self._data = json.load(f)
         self.mtime = os.stat(self.path).st_mtime
