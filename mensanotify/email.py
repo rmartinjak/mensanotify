@@ -8,6 +8,7 @@ Charset.add_charset('utf-8', Charset.QP, Charset.QP, 'utf-8')
 from flask import url_for, request
 
 from mensanotify import app
+from mensanotify.date import to_weekday
 
 
 def send(recipient, message, subject):
@@ -44,11 +45,11 @@ def sorted_dict(d, cmp=None, key=None, reverse=False):
 
 
 def send_results(email, results):
-    lines = ['Hello {}, here are your results:'.format(email), '']
+    lines = ['Hello {}, here are your results:'.format(email)]
     for mensa, weeks in sorted_dict(results):
-        lines.append(mensa + ':')
+        lines.append('\n{}:'.format(mensa))
         for day, menu in sorted_dict(weeks):
-            lines.append('  ' + day)
+            lines.append('  {} ({})'.format(day, to_weekday(day)))
             for item in menu:
                 lines.append('{}{} ({})'.format('  ' * 2,
                                                 item['name'],

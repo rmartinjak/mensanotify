@@ -9,11 +9,10 @@ from urllib import urlencode
 from lxml import etree
 from itertools import chain
 from datetime import datetime
-import locale
 import json
 
 from mensanotify import app
-
+import mensanotify.date
 
 Mensa = namedtuple('Mensa', ['char', 'name'])
 
@@ -47,16 +46,6 @@ def _blacklisted(text):
     return False
 
 
-def iso_date(datestr, loc='de_DE'):
-    old_loc = locale.getlocale()
-    try:
-        locale.setlocale(locale.LC_TIME, (loc, 'UTF-8'))
-        d = datetime.strptime(datestr, "%A, %d. %B %Y").date()
-    finally:
-        locale.setlocale(locale.LC_TIME, old_loc)
-    return d.isoformat(), d.weekday()
-
-
 def fetch_week(mensa, next_week=False):
     base = 'http://www.studentenwerk-goettingen.de/speiseplan.html?'
     params = {
@@ -72,7 +61,9 @@ def fetch_week(mensa, next_week=False):
     tree = etree.parse(uri, parser)
     for head in tree.xpath("//div[@class='speise-tblhead']"):
         menu = []
-        date, weekday = iso_date(head.text)
+        date = mensanotify.date.from_string(head.text,
+                                            '%A, %d. %B %Y',
+                                            'de_DE')
         table = head.getnext()
         for row in table.iterchildren():
             ch = row.getchildren()
