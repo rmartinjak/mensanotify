@@ -51,8 +51,6 @@ class QueryListConverter(PathConverter):
         return [x for x in value.split('/') if x]
 
     def to_url(self, value):
-        for x in value:
-            print x, type(x)
         v = (urllib.quote(x.encode('utf-8')) for x in value)
         return '/'.join(v)
 
