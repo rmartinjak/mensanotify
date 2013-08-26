@@ -17,6 +17,15 @@ from wtforms.fields import (TextField, SubmitField, SelectMultipleField,
 from mensanotify import app, mensa, users
 from mensanotify.mensa import MENSA_NAMES, MENSA_CHARS
 from mensanotify.email import send_login, send_delete
+import mensanotify.date
+
+
+def mensasort(value):
+    return sorted(value.items(), key=lambda x: MENSA_NAMES.index(x[0]))
+
+
+app.jinja_env.filters['mensasort'] = mensasort
+app.jinja_env.filters['weekday'] = mensanotify.date.to_weekday
 
 
 c2n = dict(zip(MENSA_CHARS, MENSA_NAMES))
