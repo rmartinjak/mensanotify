@@ -7,8 +7,8 @@ ISO_FORMAT = '%Y-%m-%d'
 def from_string(datestr, fmt, source_locale):
     old_loc = locale.getlocale()
     try:
-        locale.setlocale(locale.LC_TIME, (loc, source_locale))
-        d = datetime.strptime(datestr, fmt).date()
+        locale.setlocale(locale.LC_TIME, (source_locale, 'UTF-8'))
+        d = datetime.datetime.strptime(datestr, fmt).date()
     finally:
         locale.setlocale(locale.LC_TIME, old_loc)
     return d.strftime(ISO_FORMAT)
