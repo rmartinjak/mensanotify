@@ -35,7 +35,7 @@
 	{% for mensa, weeks in results|mensasort %}
 		<h1>
 			<a href="#top">&uparrow;</a>
-			{% for m, _ in results|dictsort %}
+			{% for m, _ in results|mensasort %}
 				{% if m == mensa %}
 					<a name="{{ mensa }}">{{ mensa }}</a>
 				{% else %}
