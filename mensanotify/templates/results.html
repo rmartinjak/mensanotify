@@ -34,12 +34,11 @@
 {% block results %}
 	{% for mensa, weeks in results|mensasort %}
 		<h1>
-			<a href="#top">&uparrow;</a>
+			<a name="{{ mensa }}">{{ mensa }}</a>
+			<a href="#top" class="anchor">&uparrow;</a>
 			{% for m, _ in results|mensasort %}
-				{% if m == mensa %}
-					<a name="{{ mensa }}">{{ mensa }}</a>
-				{% else %}
-					<a href="#{{ m }}">{{ m }}</a>
+				{% if m != mensa %}
+					<a href="#{{ m }}" class="anchor">{{ m }}</a>
 				{% endif %}
 			{% endfor %}
 		</h1>

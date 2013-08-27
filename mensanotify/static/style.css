@@ -4,7 +4,8 @@ body {
 }
 
 h1 {
-	font-size: 1.4em;
+	margin-top: 1.5em;
+	font-size: 1.7em;
 }
 
 div.form {
@@ -21,7 +22,7 @@ table.menu {
 
 table.menu tr.first {
 	background-color: #afafaf;
-	border-top: solid 2em white;
+	border-top: solid 2.5em white;
 }
 
 table.menu tr.odd {
@@ -76,4 +77,8 @@ ul.nav li {
 	list-style: none;
 	display: inline;
 	margin: 1em;
+}
+
+h1 a.anchor {
+	font-size: 0.4em;
 }
