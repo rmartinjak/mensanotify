@@ -123,11 +123,11 @@ class Data(object):
         self.mtime = os.stat(self.path).st_mtime
 
 
-get_data = Data(os.path.join(app.config['DATA_ROOT'], 'mensa_data.json'))
+data = Data(os.path.join(app.config['DATA_ROOT'], 'mensa_data.json'))
 
 
 def overview(mensae=MENSA_NAMES, day=None):
-    d = get_data()
+    d = data()
     if day is None:
         return {m: d[m] for m in mensae if d[m]}
 
