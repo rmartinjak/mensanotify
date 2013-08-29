@@ -129,16 +129,16 @@ def search_json(mensae=mensa.MENSA_NAMES, query=None):
 @app.route('/today', methods=['GET', 'POST'])
 @app.route('/today/<mensalist:mensae>')
 def today(mensae=MENSA_NAMES):
-    return today_tomorrow('today')
+    return today_tomorrow('today', mensae)
 
 
 @app.route('/tomorrow', methods=['GET', 'POST'])
 @app.route('/tomorrow/<mensalist:mensae>')
 def tomorrow(mensae=MENSA_NAMES):
-    return today_tomorrow('tomorrow')
+    return today_tomorrow('tomorrow', mensae)
 
 
-def today_tomorrow(day, mensae=MENSA_NAMES):
+def today_tomorrow(day, mensae):
     if (request.method == 'POST'):
         form = QueryForm(request.form)
         return redirect(url_for(day, mensae=form.mensae.data, _method='GET'))
