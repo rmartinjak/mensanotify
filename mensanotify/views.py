@@ -141,7 +141,7 @@ def tomorrow(mensae=MENSA_NAMES):
 def today_tomorrow(day, mensae):
     if (request.method == 'POST'):
         form = QueryForm(request.form)
-        return redirect(url_for(day, mensae=form.mensae.data, _method='GET'))
+        return redirect(url_for(day, mensae=form.mensae.data))
 
     date = datetime.date.today()
     if day == 'tomorrow':
@@ -152,7 +152,7 @@ def today_tomorrow(day, mensae):
     form.mensae.data = mensae
     return render_template(day + '.html',
                            form=form,
-                           form_action=url_for(day, _method='POST'),
+                           form_action=url_for(day),
                            mensae=mensae,
                            results=results)
 
