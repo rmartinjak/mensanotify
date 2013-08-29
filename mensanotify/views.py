@@ -91,10 +91,15 @@ def gen_key(N=16):
     return ''.join(random.choice(keyspace) for _ in xrange(N))
 
 
-@app.route('/')
-@app.route('/s/<mensalist:mensae>')
-@app.route('/s/<mensalist:mensae>/<query:query>')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/s/<mensalist:mensae>', methods=['GET', 'POST'])
+@app.route('/s/<mensalist:mensae>/<query:query>', methods=['GET', 'POST'])
 def search(mensae=MENSA_NAMES, query=None):
+    if request.method == 'POST':
+        form = QueryForm(request.form)
+        q = [x.data for x in form.queries if x.data] or None
+        return redirect(url_for('search', mensae=form.mensae.data, query=q))
+
     results = mensa.search_many(query, mensae)
     form = query_form(query, mensae)
 
@@ -108,16 +113,9 @@ def search(mensae=MENSA_NAMES, query=None):
 
     return render_template('results.html',
                            form=form,
-                           form_action=url_for('search_post'),
+                           form_action=url_for('search'),
                            mensae=mensae,
                            results=results)
-
-
-@app.route('/s', methods=['POST'])
-def search_post():
-    form = QueryForm(request.form)
-    q = [x.data for x in form.queries if x.data] or None
-    return redirect(url_for('search', mensae=form.mensae.data, query=q))
 
 
 @app.route('/json')
