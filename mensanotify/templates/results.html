@@ -10,11 +10,11 @@
 
 {% block content %}
 
-<h1>
-	{% block header %}
-		Search
-	{% endblock %}
-</h1>
+	<h1>
+		{% block header %}
+			Search
+		{% endblock %}
+	</h1>
 
 	<a name="top" />
 	<div class="form">
@@ -31,37 +31,38 @@
 
 	</div>
 
-{% block results %}
-	{% for mensa, weeks in results|mensasort %}
-		<h1>
-			<a name="{{ mensa }}">{{ mensa }}</a>
-			<a href="#top" class="anchor">&uparrow;</a>
-			{% for m, _ in results|mensasort %}
-				{% if m != mensa %}
-					<a href="#{{ m }}" class="anchor">{{ m }}</a>
-				{% endif %}
-			{% endfor %}
-		</h1>
-
-		<table class="menu">
-		{% for day, menu in weeks|dictsort %}
-				{% set outer_loop = loop %}
-				{% for item in menu %}
-				{% if loop.first %}
-					<tr class="first">
-						<td class="first" colspan="2">{{ day }} ({{ day|weekday }})</td>
-					</tr>
-				{% endif %}
-				<tr class="{{ loop.cycle('odd', 'even') }}">
-					<td class="cat">{{ item['cat'] }}</td>
-					<td class="item">
-						<span class="item_name">{{ item['name'] }}</span>
-						<span class="item_desc">{{ item['desc'] }}</span>
-					</td>
-				</tr>
+	{% block results %}
+		{% for mensa, weeks in results|mensasort %}
+			<h1>
+				<a name="{{ mensa }}">{{ mensa }}</a>
+				<a href="#top" class="anchor">&uparrow;</a>
+				{% for m, _ in results|mensasort %}
+					{% if m != mensa %}
+						<a href="#{{ m }}" class="anchor">{{ m }}</a>
+					{% endif %}
 				{% endfor %}
+			</h1>
+
+			<table class="menu">
+			{% for day, menu in weeks|dictsort %}
+					{% set outer_loop = loop %}
+					{% for item in menu %}
+					{% if loop.first %}
+						<tr class="first">
+							<td class="first" colspan="2">{{ day }} ({{ day|weekday }})</td>
+						</tr>
+					{% endif %}
+					<tr class="{{ loop.cycle('odd', 'even') }}">
+						<td class="cat">{{ item['cat'] }}</td>
+						<td class="item">
+							<span class="item_name">{{ item['name'] }}</span>
+							<span class="item_desc">{{ item['desc'] }}</span>
+						</td>
+					</tr>
+					{% endfor %}
+			{% endfor %}
+			</table>
 		{% endfor %}
-		</table>
-	{% endfor %}
-{% endblock %}
+	{% endblock %}
+
 {% endblock %}
