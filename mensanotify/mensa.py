@@ -123,7 +123,7 @@ class Data(object):
         self.mtime = os.stat(self.path).st_mtime
 
 
-data = Data(os.path.join(app.config['DATA_ROOT'], 'mensa_data.json'))
+get_data = Data(os.path.join(app.config['DATA_ROOT'], 'mensa_data.json'))
 
 
 def overview(mensae=MENSA_NAMES, day=None):
