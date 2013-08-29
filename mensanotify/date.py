@@ -11,7 +11,7 @@ def from_string(datestr, fmt, source_locale):
         d = datetime.datetime.strptime(datestr, fmt).date()
     finally:
         locale.setlocale(locale.LC_TIME, old_loc)
-    return from_datetime(d)
+    return from_date(d)
 
 
 def from_date(dt):
