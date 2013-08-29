@@ -10,13 +10,12 @@
 
 {% block content %}
 
-	<h1>
+	<h1 id="top">
 		{% block header %}
 			Search
 		{% endblock %}
 	</h1>
 
-	<a name="top" />
 	<div class="form">
 	<form method="POST" action="{{ form_action }}">
 		{% for q in form.queries %}
@@ -34,7 +33,7 @@
 	{% block results %}
 		{% for mensa, weeks in results|mensasort %}
 			<h1>
-				<a name="{{ mensa }}">{{ mensa }}</a>
+				<span id="{{ mensa }}">{{ mensa }}</span>
 				<a href="#top" class="anchor">&uparrow;</a>
 				{% for m, _ in results|mensasort %}
 					{% if m != mensa %}
