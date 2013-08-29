@@ -127,13 +127,13 @@ def search_json(mensae=mensa.MENSA_NAMES, query=None):
 
 
 @app.route('/today', methods=['GET', 'POST'])
-@app.route('/today/<mensalist:mensae>')
+@app.route('/today/<mensalist:mensae>', methods=['GET', 'POST'])
 def today(mensae=MENSA_NAMES):
     return today_tomorrow('today', mensae)
 
 
 @app.route('/tomorrow', methods=['GET', 'POST'])
-@app.route('/tomorrow/<mensalist:mensae>')
+@app.route('/tomorrow/<mensalist:mensae>', methods=['GET', 'POST'])
 def tomorrow(mensae=MENSA_NAMES):
     return today_tomorrow('tomorrow', mensae)
 
