@@ -4,6 +4,7 @@ from functools import wraps
 import random
 import string
 import urllib
+import datetime
 
 from flask import (request, session, render_template, redirect, url_for,
                    flash, jsonify, abort)
@@ -125,6 +126,37 @@ def search_post():
 def search_json(mensae=mensa.MENSA_NAMES, query=None):
     results = mensa.search_many(query, mensae)
     return jsonify(**results)
+
+
+@app.route('/today', methods=['GET', 'POST'])
+@app.route('/today/<mensalist:mensae>')
+def today(mensae=MENSA_NAMES):
+    return today_tomorrow('today')
+
+
+@app.route('/tomorrow', methods=['GET', 'POST'])
+@app.route('/tomorrow/<mensalist:mensae>')
+def tomorrow(mensae=MENSA_NAMES):
+    return today_tomorrow('tomorrow')
+
+
+def today_tomorrow(day, mensae=MENSA_NAMES):
+    if (request.method == 'POST'):
+        form = QueryForm(request.form)
+        return redirect(url_for(day, mensae=form.mensae.data, _method='GET'))
+
+    date = datetime.date.today()
+    if day == 'tomorrow':
+        date += datetime.timedelta(days=1)
+
+    results = mensa.overview(mensae, day=mensanotify.date.from_date(date))
+    form = QueryForm()
+    form.mensae.data = mensae
+    return render_template(day + '.html',
+                           form=form,
+                           form_action=url_for(day, _method='POST'),
+                           mensae=mensae,
+                           results=results)
 
 
 def login_required(f):

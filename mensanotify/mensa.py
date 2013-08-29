@@ -126,9 +126,16 @@ class Data(object):
 data = Data(os.path.join(app.config['DATA_ROOT'], 'mensa_data.json'))
 
 
-def overview(mensae=MENSA_NAMES):
-    d = data()
-    return {m: d[m] for m in mensae if d[m]}
+def overview(mensae=MENSA_NAMES, day=None):
+    d = get_data()
+    if day is None:
+        return {m: d[m] for m in mensae if d[m]}
+
+    results = defaultdict(dict)
+    for m in mensae:
+        if day in d[m]:
+            results[m][day] = d[m][day]
+    return dict(results)
 
 
 def search_many(queries, mensae=MENSA_NAMES):

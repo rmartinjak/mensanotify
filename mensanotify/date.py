@@ -11,7 +11,11 @@ def from_string(datestr, fmt, source_locale):
         d = datetime.datetime.strptime(datestr, fmt).date()
     finally:
         locale.setlocale(locale.LC_TIME, old_loc)
-    return d.strftime(ISO_FORMAT)
+    return from_datetime(d)
+
+
+def from_date(dt):
+    return dt.strftime(ISO_FORMAT)
 
 
 def to_weekday(iso_date, dest_locale=None):

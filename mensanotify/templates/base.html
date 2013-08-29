@@ -12,6 +12,12 @@
 			<a href="{{ url_for('search') }}">search</a>
 		</li>
 		<li>
+			<a href="{{ url_for('today') }}">today</a>
+		</li>
+		<li>
+			<a href="{{ url_for('tomorrow') }}">tomorrow</a>
+		</li>
+		<li>
 			{% if session['user'] %}
 				{% set notify_url = url_for('edit') %}
 			{% else %}
